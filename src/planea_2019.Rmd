@@ -1,0 +1,112 @@
+---
+title: "Prueba Planea 2019"
+output: html_notebook
+---
+
+```{r,echo=FALSE,warning=FALSE,include=FALSE}
+paquetines <- c("readxl","magrittr","dplyr")
+no_instalados <- paquetines[!(paquetines %in% installed.packages()[,"Package"])]
+if(length(no_instalados)) install.packages(no_instalados)
+lapply(paquetines, library, character.only = TRUE)
+```
+
+```{r}
+the_names <- c("ent",
+              "entidad",
+              "escuela",
+              "clave",
+              "turno",
+              "municipio",
+              "localidad",
+              "tipo_escuela",
+              "grado",
+              "marginacion",
+              "alumnos_programados",
+              "evaluados_len",
+              "evaluados_mat",
+              "porc_len",
+              "porc_mat",
+              "repre_len",
+              "repre_mat",
+              "escuelas_similares",
+              "I_total_len",
+              "II_total_len",
+              "III_total_len",
+              "IV_total_len",
+              "I_porc_len",
+              "II_porc_len",
+              "III_porc_len",
+              "IV_porc_len",
+              "I_similar_len",
+              "II_similar_len",
+              "III_similar_len",
+              "IV_similar_len",
+              "I_total_mat",
+              "II_total_mat",
+              "III_total_mat",
+              "IV_total_mat",
+              "I_porc_mat",
+              "II_porc_mat",
+              "III_porc_mat",
+              "IV_porc_mat",
+              "I_similar_mat",
+              "II_similar_mat",
+              "III_similar_mat",
+              "IV_similar_mat"
+              )
+df <- read_excel("../data/nac_escuelas_peb2019.xlsx",skip = 4,col_names = F)
+colnames(df) <- the_names
+df <- df[complete.cases(df),]
+logros <- the_names[19:length((the_names))]
+df[logros] <- sapply(df[logros],as.numeric)
+df
+```
+
+
+```{r}
+unique(df$tipo_escuela)
+df %>%
+  select(c("tipo_escuela",logros)) %>%
+  dplyr::group_by(tipo_escuela) %>%
+  dplyr::summarise_all(funs(mean))
+```
+
+
+```{r}
+unique(df$turno)
+df %>%
+  select(c("turno",logros)) %>%
+  dplyr::group_by(turno) %>%
+  dplyr::summarise_all(funs(mean))
+```
+
+
+```{r}
+unique(df$marginacion)
+df %>%
+  select(c("marginacion",logros)) %>%
+  dplyr::group_by(marginacion) %>%
+  dplyr::summarise_all(funs(mean))
+```
+
+
+```{r}
+marg_tipo <- df[df$marginacion == "Muy alta o Alta",]
+marg_tipo %>%
+  select(c("tipo_escuela",logros)) %>%
+  dplyr::group_by(tipo_escuela) %>%
+  dplyr::summarise_all(funs(mean))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

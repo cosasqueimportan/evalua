@@ -1,0 +1,33 @@
+{"nodes":[
+{"name":"Comunitaria"},
+{"name":"General Pública"},
+{"name":"Privada"},
+{"name":"Técnica Pública"},
+{"name":"Telesecundaria"},
+{"name":"I"},
+{"name":"II"},
+{"name":"III"},
+{"name":"IV"}
+],
+"links":[
+{"source":0,"target":5,"value":53.97073},
+{"source":0,"target":6,"value":35.54329},
+{"source":0,"target":7,"value":8.596621},
+{"source":0,"target":8,"value":1.888540},
+{"source":1,"target":5,"value":34.24268},
+{"source":1,"target":6,"value":44.19987},
+{"source":1,"target":7,"value":16.092219},
+{"source":1,"target":8,"value":5.468436},
+{"source":2,"target":5,"value":14.26934},
+{"source":2,"target":6,"value":36.67651},
+{"source":2,"target":7,"value":29.690807},
+{"source":2,"target":8,"value":19.364410},
+{"source":3,"target":5,"value":35.65451},
+{"source":3,"target":6,"value":43.61008},
+{"source":3,"target":7,"value":15.512514},
+{"source":3,"target":8,"value":5.225189},
+{"source":4,"target":5,"value":35.65451},
+{"source":4,"target":6,"value":43.61008},
+{"source":4,"target":7,"value":11.481825},
+{"source":4,"target":8,"value":3.029638}
+]}
