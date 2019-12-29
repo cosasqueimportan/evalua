@@ -3,8 +3,11 @@
 
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Sankey Particles</title>
+<meta charset="utf-8">
+<meta property="og:image" content="https://cosasqueimportan.github.io/evalua/tipo_escuela/assets/tn.png">
+<meta property="og:url" content="https://cosasqueimportan.github.io/evalua/tipo_escuela">
+<meta name="twitter:image" content="https://cosasqueimportan.github.io/evalua/tipo_escuela/assets/tn.png">
+<title>Tipo Escuela - Evalua 2019</title>
 <style>
 .node rect {
   cursor: move;
@@ -63,9 +66,9 @@ var svg = d3.select("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var sankey = d3.sankey()
-    .nodeWidth(15)
+    .nodeWidth(10)
     .nodePadding(10)
-    .size([width, height]);
+    .size([width - 10, height]);
 
 var path = sankey.link();
 
@@ -73,13 +76,12 @@ var freqCounter = 1;
 
 var myColor = ["#67499d","#51a0c3","#8ebc78","#e2d991","#e8844d","#a4a4a4","#a4a4a4","#a4a4a4","#a4a4a4"]
 
-
 d3.json("escuelas.json", function(escuelas) {
 
   sankey
       .nodes(escuelas.nodes)
       .links(escuelas.links)
-      .layout(30);
+      .layout(32);
 
   var link = svg.append("g").selectAll(".link")
       .data(escuelas.links)
@@ -144,7 +146,7 @@ d3.json("escuelas.json", function(escuelas) {
 
   var t = d3.timer(tick, 100);
   var particles = [];
-  var borrar = 920;
+  var borrar = sankey.size()[0];
   let recorr = 0;
   var elapsed = 0;
 
@@ -152,9 +154,9 @@ d3.json("escuelas.json", function(escuelas) {
 
     particles = particles.filter(function (d) {return d.time > (elapsed - 2000)});
 
-    if (freqCounter > 500) {
+    if (freqCounter > 1000) {
       freqCounter = 1;
-      borrar = 920;
+      borrar = sankey.size()[0];
       recorr = 0;
     }
 
@@ -162,23 +164,23 @@ d3.json("escuelas.json", function(escuelas) {
     .each(
       function (d) {
         if (d.freq >= freqCounter) {
-            for (i=0;i<1;i++){
-                var offset = (Math.random() - .5) * d.dy;
-                particles.push({link: d, time: elapsed, offset: offset, path: this})
-                var offset = (Math.random() - .5) * d.dy;
-                particles.push({link: d, time: elapsed, offset: offset, path: this})
-    elapsed = elapsed + 0.001;
+            for (i=0;i<3;i++){
+                var offset = (Math.random() - .49) * d.dy;
+                var ox = Math.random()*100
+                particles.push({link: d, ox:ox, time: elapsed, offset: offset, path: this})
             }
         }
       });
 
     particleEdgeCanvasPath(elapsed);
     freqCounter = freqCounter + 0.15;
-    // elapsed = elapsed + 0.1;
+    elapsed = elapsed + 0.01;
     borrar = borrar - 0.3;
     recorr = recorr + 0.3;
+    // console.log(d3.max(hola))
   }
 
+  let hola = []
   let redu = 0.5;
   function particleEdgeCanvasPath(elapsed) {
     var context = d3.select("canvas").node().getContext("2d")
@@ -190,16 +192,15 @@ d3.json("escuelas.json", function(escuelas) {
       context.lineWidth = "1px";
     for (var x in particles) {
         var currentTime = (elapsed - particles[x].time) * redu;
-        var currentPercent = ((currentTime) / (980)) *  (particles[x].path.getTotalLength())// + moveright + currentTime
-        var currentPos = particles[x].path.getPointAtLength(currentPercent - Math.random()*recorr) ;
+        var currentPercent = ((currentTime) / (width)) *  (particles[x].path.getTotalLength())// + moveright + currentTime
+        var currentPos = particles[x].path.getPointAtLength(currentPercent - particles[x].ox) ;
         context.beginPath();
         context.fillStyle = particles[x].link.particleColor(currentTime);
         context.arc(currentPos.x, currentPos.y + particles[x].offset, particles[x].link.particleSize, 0, 2*Math.PI);
         context.fill();
+        hola.push(currentTime)
     }
   }
-
-    elapsed = elapsed - 920;
 });
 
     </script>
